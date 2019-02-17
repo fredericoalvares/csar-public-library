@@ -1,0 +1,78 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.influxdb.linux
+  template_version: 0.0.1-SNAPSHOT
+  template_author: easyvirt
+
+description: InfluxDB installation with shell scripts
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - alien-base-types:2.1.1
+  - org.alien4cloud.mysql.pub:0.0.1-SNAPSHOT
+
+node_types:
+  com.easyvirt.influxdb.linux.nodes.InfluxDB:
+    derived_from: com.easyvirt.influxdb.pub.nodes.InfluxDB
+    description: A node that provides an InfluxDB endpoint.
+    metadata:
+      icon: /images/influxdb.png
+    requirements:
+      - host: 
+          capability: tosca.capabilities.Container
+          node: tosca.nodes.Compute
+          relationship: tosca.relationships.HostedOn
+          occurrences: [1, 1]
+          node_filter:
+            capabilities:
+              - tosca.capabilities.OperatingSystem:
+                  properties:
+                    - type: { equal: linux }
+                    - architecture: { equal: x86_64 }
+                    - distribution: { valid_values: [ "ubuntu", "debian" ] }
+    properties:
+      component_version:
+        type: version
+        default: 1.7
+        constraints:
+          - equal: 1.7
+      api_port:
+        type: integer
+        default: 8086
+        description: The port on which the underlying database service will listen to data. </p>
+      rpc_port:
+        type: integer
+        default: 8088
+        description: The RPC port to perform back up and restore operations. </p>
+      name:
+        type: string
+        required: true
+        default: hydda
+        description: The logical name of the database.
+      user:
+        type: string
+        default: pass
+        description: The special user account used for database administration.
+      password:
+        type: string
+        default: pass
+        description: The password associated with the user account provided in the ‘user’ property.</p>
+    interfaces:
+      Standard:
+        create:
+          inputs:
+            DB_VERSION: { get_property: [SELF, version] }
+          implementation: scripts/install_influxdb.sh
+        configure:
+          inputs:
+            API_PORT: { get_property: [SELF, api_port] }
+            RCP_PORT: { get_property: [SELF, rcp_port] }
+            DB_NAME: { get_property: [SELF, name] }
+            DB_USER: { get_property: [SELF, user] }
+            DB_PASS: { get_property: [SELF, password] }
+          implementation: scripts/configure_influxdb.sh
+        start:
+          implementation: scripts/start_influxdb.sh
+        stop:
+          implementation: scripts/stop_influxdb.sh
