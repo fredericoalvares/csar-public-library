@@ -14,7 +14,7 @@ node_types:
   com.easyvirt.influxdb.pub.nodes.InfluxDB:
     derived_from: tosca.nodes.Database
     abstract: true
-    description: A node that provides a mysql endpoint.
+    description: A node that provides an InfluxDB endpoint.
     metadata:
       icon: /images/influxdb.png
     capabilities:
