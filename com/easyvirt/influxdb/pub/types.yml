@@ -50,5 +50,5 @@ node_types:
         description: The password associated with the user account provided in the ‘db_user’ property.</p>
 
 capability_types:
-  org.alien4cloud.mysql.pub.capabilities.MysqlDatabaseEndpoint:
+  org.alien4cloud.mysql.pub.capabilities.InfluxDBEndpoint:
       derived_from: tosca.capabilities.Endpoint.Database
