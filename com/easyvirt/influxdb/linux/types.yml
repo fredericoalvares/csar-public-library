@@ -9,8 +9,8 @@ description: InfluxDB installation with shell scripts
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-  - alien-base-types:2.1.1
-  - org.alien4cloud.mysql.pub:0.0.1-SNAPSHOT
+#  - alien-base-types:2.1.1
+  - com.easyvirt.influxdb.pub:0.0.1-SNAPSHOT
 
 node_types:
   com.easyvirt.influxdb.linux.nodes.InfluxDB:
