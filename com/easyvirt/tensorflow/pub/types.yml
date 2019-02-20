@@ -1,0 +1,25 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.tensorflow.pub
+  template_version: 0.0.1-SNAPSHOT
+  template_author: easyvirt
+
+description: Tensorflow installation
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - org.ystia.python.pub:2.2.0-SNAPSHOT
+
+node_types:
+  com.easyvirt.tensorflow.pub.nodes.TensorFlow:
+    derived_from: tosca.nodes.SoftwareComponent
+    abstract: true
+    description: A node that represents a tensorflow software.
+    metadata:
+      icon: /images/tensorflow.png
+    requirements:
+      - python_host:
+          capability: org.ystia.python.pub.capabilities.PythonHosting
+          node: org.ystia.python.linux.bash.nodes.Python
+          relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime

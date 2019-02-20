@@ -1,0 +1,40 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.tensorflow.linux
+  template_version: 0.0.1-SNAPSHOT
+  template_author: easyvirt
+
+description: Tensorflow installation with shell scripts
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - com.easyvirt.tensorflow.pub:0.0.1-SNAPSHOT
+
+node_types:
+  com.easyvirt.tensorflow.linux.nodes.Tensorflow:
+    derived_from: com.easyvirt.tensorflow.pub.nodes.Tensorflow
+    description: A node that represents a tensorflow software.
+    metadata:
+      icon: /images/tensorflow.png
+    requirements:
+      - python_host:
+          capability: org.ystia.python.pub.capabilities.PythonHosting
+          node: org.ystia.python.linux.bash.nodes.Python
+          relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
+    properties:
+      component_version:
+        type: version
+        default: 1.12
+      gpu_enabled: 
+        type: gpu
+        default: false 
+        valid_values: [ true, false ]
+
+    interfaces:
+      Standard:
+        create:
+          inputs:
+            TF_VERSION: { get_property: [SELF, version] }
+            GPU_ENABLED: { get_property: [SELF, gpu] }
+          implementation: scripts/install_tensorflow.sh
