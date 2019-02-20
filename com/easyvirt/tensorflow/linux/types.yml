@@ -20,7 +20,7 @@ node_types:
     requirements:
       - python_host:
           capability: org.ystia.python.pub.capabilities.PythonHosting
-          node: org.ystia.python.linux.bash.nodes.Python
+          node: org.ystia.nodes.SoftwareComponent
           relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
     properties:
       component_version:
