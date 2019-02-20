@@ -12,8 +12,8 @@ imports:
   - com.easyvirt.tensorflow.pub:0.0.1-SNAPSHOT
 
 node_types:
-  com.easyvirt.tensorflow.linux.nodes.Tensorflow:
-    derived_from: com.easyvirt.tensorflow.pub.nodes.Tensorflow
+  com.easyvirt.tensorflow.linux.nodes.TensorFlow:
+    derived_from: com.easyvirt.tensorflow.pub.nodes.TensorFlow
     description: A node that represents a tensorflow software.
     metadata:
       icon: /images/tensorflow.png
