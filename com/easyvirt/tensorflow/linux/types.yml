@@ -27,14 +27,13 @@ node_types:
         type: version
         default: 1.12
       gpu_enabled: 
-        type: gpu
+        type: boolean
         default: false 
-        valid_values: [ true, false ]
 
     interfaces:
       Standard:
         create:
           inputs:
             TF_VERSION: { get_property: [SELF, version] }
-            GPU_ENABLED: { get_property: [SELF, gpu] }
+            GPU_ENABLED: { get_property: [SELF, gpu_enabled] }
           implementation: scripts/install_tensorflow.sh
