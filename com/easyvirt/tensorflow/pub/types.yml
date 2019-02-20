@@ -9,7 +9,7 @@ description: Tensorflow installation
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-  - org.ystia.python.pub:2.2.0-SNAPSHOT
+  - org.ystia.python.pub:2.0.0-SNAPSHOT
 
 node_types:
   com.easyvirt.tensorflow.pub.nodes.TensorFlow:
