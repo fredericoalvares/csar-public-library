@@ -23,3 +23,20 @@ node_types:
           capability: org.ystia.python.pub.capabilities.PythonHosting
           node: org.ystia.nodes.SoftwareComponent
           relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
+      - filesystem_endpoint:
+          capability: tosca.capabilities.Node
+          relationship: com.easyvirt.tensorflow.pub.relationships.ConnectsTensorflowToFilessystem
+          occurrences: [0,1]
+
+
+relationship_types:
+  com.easyvirt.tensorflow.pub.relationships.ConnectsTensorflowToFilessystem:
+    derived_from: org.ystia.relationships.ConnectsTo
+    description: Connects TensorFlow to a FileSystem to specify where will be stored the models.
+    valid_target_types: [ tosca.capabilities.Node ]
+    interfaces:
+      Configure:
+          pre_configure_source:
+            implementation: scripts/tensorflow-to-filesystem.sh
+            inputs:
+              path_fs: { get_property: [ TARGET, location ] }

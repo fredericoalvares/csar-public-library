@@ -1,0 +1,75 @@
+metadata:
+  template_name: com.easyvirt.topologies.tensorflow
+  template_version: 0.0.1-SNAPSHOT
+  template_author: Easyvirt
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - alien-extended-storage-types:2.0.0
+  - org.ystia.common:2.0.0-SNAPSHOT
+  - org.ystia.python.pub:2.0.0-SNAPSHOT
+  - org.ystia.python.linux.bash:2.0.0-SNAPSHOT
+  - com.easyvirt.tensorflow.pub:0.0.1-SNAPSHOT
+  - com.easyvirt.tensorflow.linux:0.0.1-SNAPSHOT
+
+topology_template:
+  description: A topology template with TensorFlow
+
+  node_templates:
+
+    # Network
+    Network:
+      type: tosca.nodes.Network
+      properties:
+        ip_version: 4
+
+    # VM for Jupyter
+    Compute:
+      type: tosca.nodes.Compute
+      requirements:
+        - network:
+            node: Network
+            relationship: tosca.relationships.Network
+      capabilities:
+        os:
+          properties:
+            type: linux
+
+    Python:
+      type: org.ystia.python.linux.bash.nodes.Python
+      properties:
+        nlp_twitter: true
+        dataviz: true
+        dataformat: true
+        pybrain: true
+      requirements:
+        - host:
+            node: Compute
+
+    BlockStorage:
+      type: tosca.nodes.BlockStorage
+      properties:
+        size: "10 GB"
+      requirements:
+        - attachment:
+            node: Compute
+            capability: tosca.capabilities.Attachment
+            relationship: tosca.relationships.AttachTo
+
+    TensorFlow:
+      type: com.easyvirt.tensorflow.linux.nodes.TensorFlow
+      requirements:
+        - python_host:
+            node: Python
+        - filesystem_endpoint:
+            node: LinuxFileSystem
+
+    LinuxFileSystem:
+      type: alien.nodes.LinuxFileSystem
+      properties:
+        location: "/mountedStorageNb"
+      requirements:
+        - host:
+            node: Compute
+        - partition:
+            node: BlockStorage

@@ -15,13 +15,7 @@ node_types:
   com.easyvirt.tensorflow.linux.nodes.TensorFlow:
     derived_from: com.easyvirt.tensorflow.pub.nodes.TensorFlow
     description: A node that represents a tensorflow software.
-    metadata:
-      icon: /images/tensorflow.png
-    requirements:
-      - python_host:
-          capability: org.ystia.python.pub.capabilities.PythonHosting
-          node: org.ystia.nodes.SoftwareComponent
-          relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
+
     properties:
       component_version:
         type: version
@@ -37,3 +31,5 @@ node_types:
             TF_VERSION: { get_property: [SELF, version] }
             GPU_ENABLED: { get_property: [SELF, gpu_enabled] }
           implementation: scripts/install_tensorflow.sh
+
+
