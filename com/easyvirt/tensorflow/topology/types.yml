@@ -2,7 +2,7 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.tensorflow.topology
-  template_version: 0.0.1-SNAPSHOT
+  template_version: 0.0.2-SNAPSHOT
   template_author: Easyvirt
 
 imports:
@@ -11,8 +11,8 @@ imports:
   - org.ystia.common:2.0.0-SNAPSHOT
   - org.ystia.python.pub:2.0.0-SNAPSHOT
   - org.ystia.python.linux.bash:2.0.0-SNAPSHOT
-  - com.easyvirt.tensorflow.pub:0.0.1-SNAPSHOT
-  - com.easyvirt.tensorflow.linux:0.0.1-SNAPSHOT
+  - com.easyvirt.tensorflow.pub:0.0.2-SNAPSHOT
+  - com.easyvirt.tensorflow.linux:0.0.2-SNAPSHOT
 
 topology_template:
   description: A topology template with TensorFlow
