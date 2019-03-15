@@ -1,5 +1,5 @@
 metadata:
-  template_name: com.easyvirt.topologies.tensorflow
+  template_name: com.easyvirt.tensorflow.topology
   template_version: 0.0.1-SNAPSHOT
   template_author: Easyvirt
 
