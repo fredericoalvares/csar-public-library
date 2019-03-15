@@ -9,6 +9,7 @@ description: Tensorflow installation
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
+  - org.ystia.common:2.0.1-SNAPSHOT
   - org.ystia.python.pub:2.0.0-SNAPSHOT
 
 node_types:
@@ -19,7 +20,7 @@ node_types:
     metadata:
       icon: /images/tensorflow.png
     requirements:
-      - python_host:
+      - host:
           capability: org.ystia.python.pub.capabilities.PythonHosting
           node: org.ystia.nodes.SoftwareComponent
           relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime

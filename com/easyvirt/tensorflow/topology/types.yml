@@ -61,7 +61,7 @@ topology_template:
     TensorFlow:
       type: com.easyvirt.tensorflow.linux.nodes.TensorFlow
       requirements:
-        - python_host:
+        - host:
             node: Python
         - filesystem_endpoint:
             node: LinuxFileSystem
