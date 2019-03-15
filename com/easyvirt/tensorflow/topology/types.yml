@@ -43,7 +43,7 @@ topology_template:
         dataformat: true
         pybrain: true
       requirements:
-        - host:
+        - python_host:
             node: Compute
 
     BlockStorage:
