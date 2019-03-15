@@ -9,8 +9,9 @@ description: Tensorflow installation
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-  - org.ystia.common:2.0.1-SNAPSHOT
+  - org.ystia.common:2.0.0-SNAPSHOT
   - org.ystia.python.pub:2.0.0-SNAPSHOT
+  - org.ystia.python.linux.bash:2.0.0-SNAPSHOT
 
 node_types:
   com.easyvirt.tensorflow.pub.nodes.TensorFlow:
@@ -22,8 +23,11 @@ node_types:
     requirements:
       - host:
           capability: org.ystia.python.pub.capabilities.PythonHosting
-          node: org.ystia.nodes.SoftwareComponent
           relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
+          occurrences: [1,1]
+          #          capability: org.ystia.python.pub.capabilities.PythonHosting
+          # node: org.ystia.nodes.SoftwareComponent
+          #relationship: org.ystia.python.pub.relationships.HostedOnPythonRuntime
       - filesystem_endpoint:
           capability: tosca.capabilities.Node
           relationship: com.easyvirt.tensorflow.pub.relationships.ConnectsTensorflowToFilessystem
