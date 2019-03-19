@@ -2,35 +2,67 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.influxdb.linux
-  template_version: 0.0.1-SNAPSHOT
+  template_version: 0.0.2-SNAPSHOT
   template_author: easyvirt
 
 description: InfluxDB installation with shell scripts
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-#  - alien-base-types:2.1.1
-  - com.easyvirt.influxdb.pub:0.0.1-SNAPSHOT
+  - alien-base-types:2.0.0
+  - com.easyvirt.influxdb.pub:0.0.2-SNAPSHOT
 
 node_types:
-  com.easyvirt.influxdb.linux.nodes.InfluxDB:
-    derived_from: com.easyvirt.influxdb.pub.nodes.InfluxDB
+  com.easyvirt.influxdb.linux.nodes.InfluxDbEndpoint:
+    derived_from: org.ystia.nodes.Database
     description: A node that provides an InfluxDB endpoint.
     metadata:
       icon: /images/influxdb.png
+    capabilities:
+      influxdb_endpoint:
+        type: com.easyvirt.influxdb.pub.capabilities.Endpoint.InfluxDbEndpoint
+        occurrences: [0, unbounded]
     requirements:
-      - host: 
-          capability: tosca.capabilities.Container
-          node: tosca.nodes.Compute
-          relationship: tosca.relationships.HostedOn
-          occurrences: [1, 1]
-          node_filter:
-            capabilities:
-              - tosca.capabilities.OperatingSystem:
-                  properties:
-                    - type: { equal: linux }
-                    - architecture: { equal: x86_64 }
-                    - distribution: { valid_values: [ "ubuntu", "debian" ] }
+      - host:
+          capability: com.easyvirt.influxdb.pub.capabilities.Container.InfluxDbServer
+          relationship: com.easyvirt.influxdb.linux.relationships.HostedOn.InfluxDbServer
+          occurrences: [1,1]
+      - blockstorage:
+          capability: tosca.capabilities.Node
+          relationship: com.easyvirt.influxdb.linux.relationships.DependsOn.InfluxDbVolume
+          occurrences: [0,1]
+    properties:
+      user:
+        type: string
+        default: pass
+        description: The special user account used for database administration.
+      password:
+        type: string
+        default: pass
+        description: The password associated with the user account provided in the ‘user’ property.</p>
+    interfaces:
+      Standard:
+        create:
+          inputs:
+            DB_VERSION: { get_property: [SELF, name] }
+          implementation: scripts/influxdb_create_db.sh
+        configure:
+          inputs:
+            DB_NAME: { get_property: [SELF, name] }
+            DB_USER: { get_property: [SELF, user] }
+            DB_PASS: { get_property: [SELF, password] }
+          implementation: scripts/influxdb_configure_db.sh
+    artifacts:
+      - scripts:
+          type: tosca.artifacts.File
+          file: scripts
+
+
+  com.easyvirt.influxdb.linux.nodes.InfluxDbServer:
+    derived_from: org.ystia.nodes.DBMS
+    description: InfluxDB Server component for linux
+    tags:
+      icon: /images/influxdb.jpg
     properties:
       component_version:
         type: version
@@ -45,19 +77,22 @@ node_types:
         type: integer
         default: 8088
         description: The RPC port to perform back up and restore operations. </p>
-      name:
-        type: string
-        required: true
-        default: hydda
-        description: The logical name of the database.
-      user:
-        type: string
-        default: pass
-        description: The special user account used for database administration.
-      password:
-        type: string
-        default: pass
-        description: The password associated with the user account provided in the ‘user’ property.</p>
+    requirements:
+      - host: 
+          capability: tosca.capabilities.Container
+          node: tosca.nodes.Compute
+          relationship: tosca.relationships.HostedOn
+          occurrences: [1, 1]
+          node_filter:
+            capabilities:
+              - tosca.capabilities.OperatingSystem:
+                  properties:
+                    - type: { equal: linux }
+                    - architecture: { equal: x86_64 }
+                    - distribution: { valid_values: [ "ubuntu", "debian" ] }
+    capabilities:
+      host:
+        type: com.easyvirt.influxdb.pub.capabilities.Container.InfluxDbServer
     interfaces:
       Standard:
         create:
@@ -68,11 +103,33 @@ node_types:
           inputs:
             API_PORT: { get_property: [SELF, api_port] }
             RCP_PORT: { get_property: [SELF, rcp_port] }
-            DB_NAME: { get_property: [SELF, name] }
-            DB_USER: { get_property: [SELF, user] }
-            DB_PASS: { get_property: [SELF, password] }
           implementation: scripts/configure_influxdb.sh
         start:
           implementation: scripts/start_influxdb.sh
         stop:
           implementation: scripts/stop_influxdb.sh
+    artifacts:
+      - scripts:
+          type: tosca.artifacts.File
+          file: scripts
+
+relationship_types:
+  com.easyvirt.influxdb.linux.relationships.HostedOn.InfluxDbServer:
+    derived_from: org.ystia.relationships.HostedOn
+    description: >
+      This type represents a hosting relationship between InfluxDbServer and InfluxDbEndpoint nodes components
+    valid_target_types: [ com.easyvirt.influxdb.pub.capabilities.Container.InfluxDbServer ]
+
+  com.easyvirt.influxdb.linux.relationships.DependsOn.InfluxDbVolume:
+    derived_from: org.ystia.relationships.DependsOn
+    valid_target_types: [ tosca.capabilities.Node ]
+    interfaces:
+      Configure:
+        pre_configure_source:
+          inputs:
+            TARGET_BLOCKSTORAGE_DEVICE: { get_attribute: [TARGET, device] }
+          implementation: scripts/influxdb_pre_configure_volume.sh
+    artifacts:
+      - scripts:
+          type: tosca.artifacts.File
+          file: scripts

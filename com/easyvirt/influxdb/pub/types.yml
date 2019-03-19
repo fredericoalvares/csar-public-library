@@ -2,53 +2,21 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.influxdb.pub
-  template_version: 0.0.1-SNAPSHOT
+  template_version: 0.0.2-SNAPSHOT
   template_author: easyvirt
 
 description: InfluxDB installation
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
+  - org.ystia.common:2.0.0-SNAPSHOT
 
-node_types:
-  com.easyvirt.influxdb.pub.nodes.InfluxDB:
-    derived_from: tosca.nodes.Database
-    abstract: true
-    description: A node that provides an InfluxDB endpoint.
-    metadata:
-      icon: /images/influxdb.png
-    capabilities:
-      database_endpoint: com.easyvirt.influxdb.pub.capabilities.InfluxDBEndpoint
-    requirements:
-      - host:
-          capability: tosca.capabilities.Container
-          node: tosca.nodes.Compute
-          relationship: tosca.relationships.HostedOn
-    metadata:
-      icon: /images/influxdb.png
-    properties:
-      api_port:
-        type: integer
-        default: 8086
-        description: The API port on which the underlying database service will listen to data. </p>
-      rpc_port:
-        type: integer
-        default: 8088
-        description: The RPC port to perform back up and restore operations. </p>
-      name:
-        type: string
-        required: true
-        default: hydda
-        description: The logical name of the database.
-      user:
-        type: string
-        default: pass
-        description: The special user account used for database administration.
-      password:
-        type: string
-        default: pass
-        description: The password associated with the user account provided in the ‘db_user’ property.</p>
 
 capability_types:
-  com.easyvirt.influxdb.pub.capabilities.InfluxDBEndpoint:
-      derived_from: tosca.capabilities.Endpoint.Database
+  com.easyvirt.influxdb.pub.capabilities.Container.InfluxDbServer:
+    derived_from: tosca.capabilities.Container
+    description: InfluxDB Server can host InfluxDB Endpoint
+
+  com.easyvirt.influxdb.pub.capabilities.Endpoint.InfluxDbEndpoint:
+    derived_from: tosca.capabilities.Root
+    description: InfluxDB endpoint
