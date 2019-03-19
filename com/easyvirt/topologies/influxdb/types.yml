@@ -45,8 +45,6 @@ topology_template:
             relationship: tosca.relationships.Network
     InfluxDbServer:
       type: com.easyvirt.influxdb.linux.nodes.InfluxDbServer
-      properties:
-        root_password: { get_input: root_password }
       requirements:
         - host:
             node: Compute
