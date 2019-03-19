@@ -34,11 +34,11 @@ node_types:
     properties:
       user:
         type: string
-        default: pass
+        default: "hydda"
         description: The special user account used for database administration.
       password:
         type: string
-        default: pass
+        default: "pass"
         description: The password associated with the user account provided in the ‘user’ property.</p>
     interfaces:
       Standard:

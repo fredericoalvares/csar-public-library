@@ -2,84 +2,60 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.topologies.influxdb_single
-  template_version: 0.0.1-SNAPSHOT
+  template_version: 0.0.2-SNAPSHOT
   template_author: EasyVirt
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-  - com.easyvirt.influxdb.pub:0.0.1-SNAPSHOT
-  - com.easyvirt.influxdb.linux:0.0.1-SNAPSHOT
+  - com.easyvirt.influxdb.pub:0.0.2-SNAPSHOT
+  - com.easyvirt.influxdb.linux:0.0.2-SNAPSHOT
 
 topology_template:
   description: A basic topology template for InfluxDB as a Single Server node
 
   # Inputus properties
-
   inputs:
-    repository:
+    db_name:
       type: string
-      default: http://repo.mysql.com/yum/mysql-5.6-community/el/7/x86_64
-    root_password:
+      description: Database name
+      default: "hydda"
+    db_user:
       type: string
-      description: DBMS root password
-      default: "mysql"
-    name1:
+      description: Database user
+      default: "hydda"
+    db_password:
       type: string
-      description: Database1 name
-      default: "DB1"
-    password1:
-      type: string
-      description: Database1 user password
-      default: "db1pwd"
-    name2:
-      type: string
-      description: Database2 name
-      default: "DB2"
-    password2:
-      type: string
-      description: Database2 user password
-      default: "db2pwd"
+      description: Database user password
+      default: "pass"
 
   node_templates:
 
     # Network
-
     Network:
       type: tosca.nodes.Network
       properties:
         ip_version: 4
 
     # VM for MySQL Server
-
     Compute:
       type: tosca.nodes.Compute
       requirements:
         - network:
             node: Network
             relationship: tosca.relationships.Network
-    InfluxDBServer:
-      type: com.easyvirt.influxdb.linux.nodes.InfluxDB
+    InfluxDbServer:
+      type: com.easyvirt.influxdb.linux.nodes.InfluxDbServer
       properties:
-        repository: { get_input: repository }
         root_password: { get_input: root_password }
       requirements:
         - host:
             node: Compute
-    MySQLDatabase1:
-      type: com.easyvirt.influxdborg.ystia.mysql.linux.bash.nodes.MySQLDatabase
+    InfluxDb:
+      type: com.easyvirt.influxdb.linux.nodes.InfluxDbEndpoint
       properties:
-        name: { get_input: name1 }
-        user: { get_input: name1 }
-        password: { get_input: password1 }
+        name: { get_input: db_name }
+        user: { get_input: db_user }
+        password: { get_input: db_password }
       requirements:
         - host:
-            node: MySQLServer
-    MySQLDatabase2:
-      type: org.ystia.mysql.linux.bash.nodes.MySQLDatabase
-      properties:
-        name: { get_input: name2 }
-        user: { get_input: name2 }
-        password: { get_input: password2 }
-      requirements:
-        - host:
-            node: MySQLServer
+            node: InfluxDbServer
