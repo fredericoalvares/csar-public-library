@@ -62,7 +62,7 @@ node_types:
     derived_from: org.ystia.nodes.DBMS
     description: InfluxDB Server component for linux
     tags:
-      icon: /images/influxdb.jpg
+      icon: /images/influxdb.png
     properties:
       component_version:
         type: version
