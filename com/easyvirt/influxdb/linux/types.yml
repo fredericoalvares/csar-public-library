@@ -97,7 +97,7 @@ node_types:
       Standard:
         create:
           inputs:
-            DB_VERSION: { get_property: [SELF, version] }
+            DB_VERSION: { get_property: [SELF, component_version] }
           implementation: scripts/install_influxdb.sh
         configure:
           inputs:
