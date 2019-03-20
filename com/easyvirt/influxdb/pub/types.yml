@@ -2,7 +2,7 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.influxdb.pub
-  template_version: 0.0.9-SNAPSHOT
+  template_version: 0.0.10-SNAPSHOT
   template_author: easyvirt
 
 description: InfluxDB installation
