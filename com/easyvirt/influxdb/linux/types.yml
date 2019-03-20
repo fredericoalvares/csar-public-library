@@ -90,7 +90,7 @@ node_types:
                     - type: { equal: linux }
                     - architecture: { equal: x86_64 }
                     - distribution: { valid_values: [ "ubuntu", "debian" ] }
-     - filesystem_endpoint:
+      - filesystem_endpoint:
           capability: tosca.capabilities.Node
           relationship: com.easyvirt.influxdb.linux.relationships.DependsOn.InfluxDbVolume
           occurrences: [1, 1]
