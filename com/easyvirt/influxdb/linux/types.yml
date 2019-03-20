@@ -2,7 +2,7 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.influxdb.linux
-  template_version: 0.0.6-SNAPSHOT
+  template_version: 0.0.7-SNAPSHOT
   template_author: easyvirt
 
 description: InfluxDB installation with shell scripts
@@ -10,7 +10,7 @@ description: InfluxDB installation with shell scripts
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
   - alien-base-types:2.0.0
-  - com.easyvirt.influxdb.pub:0.0.6-SNAPSHOT
+  - com.easyvirt.influxdb.pub:0.0.7-SNAPSHOT
 
 node_types:
   com.easyvirt.influxdb.linux.nodes.InfluxDbEndpoint:
