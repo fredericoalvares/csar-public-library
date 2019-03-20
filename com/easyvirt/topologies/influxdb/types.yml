@@ -2,15 +2,15 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.topologies.influxdb_single
-  template_version: 0.0.7-SNAPSHOT
+  template_version: 0.0.8-SNAPSHOT
   template_author: EasyVirt
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
   - alien-extended-storage-types:2.0.0
   - org.ystia.common:2.0.0-SNAPSHOT
-  - com.easyvirt.influxdb.pub:0.0.7-SNAPSHOT
-  - com.easyvirt.influxdb.linux:0.0.7-SNAPSHOT
+  - com.easyvirt.influxdb.pub:0.0.8-SNAPSHOT
+  - com.easyvirt.influxdb.linux:0.0.8-SNAPSHOT
 
 topology_template:
   description: A basic topology template for InfluxDB as a Single Server node
