@@ -2,31 +2,38 @@ tosca_definitions_version: alien_dsl_2_0_0
 
 metadata:
   template_name: com.easyvirt.topologies.influxdb_single
-  template_version: 0.0.5-SNAPSHOT
+  template_version: 0.0.6-SNAPSHOT
   template_author: EasyVirt
 
 imports:
   - tosca-normative-types:1.0.0-ALIEN20
-  - com.easyvirt.influxdb.pub:0.0.5-SNAPSHOT
-  - com.easyvirt.influxdb.linux:0.0.5-SNAPSHOT
+  - alien-extended-storage-types:2.0.0
+  - org.ystia.common:2.0.0-SNAPSHOT
+  - com.easyvirt.influxdb.pub:0.0.6-SNAPSHOT
+  - com.easyvirt.influxdb.linux:0.0.6-SNAPSHOT
 
 topology_template:
   description: A basic topology template for InfluxDB as a Single Server node
 
   # Inputus properties
-  inputs:
-    db_name:
-      type: string
-      description: Database name
-      default: "hydda"
-    db_user:
-      type: string
-      description: Database user
-      default: "hydda"
-    db_password:
-      type: string
-      description: Database user password
-      default: "pass"
+#  inputs:
+#     db_path:
+#       type: string
+#       description: database data path
+#       default: "/mountedStorageNb/influxdb"
+
+#    db_name:
+#      type: string
+#      description: Database name
+#      default: "hydda"
+#    db_user:
+#      type: string
+#      description: Database user
+#      default: "hydda"
+#    db_password:
+#      type: string
+#      description: Database user password
+#      default: "pass"
 
   node_templates:
 
@@ -36,6 +43,8 @@ topology_template:
       properties:
         ip_version: 4
 
+
+
     # VM for MySQL Server
     Compute:
       type: tosca.nodes.Compute
@@ -43,17 +52,48 @@ topology_template:
         - network:
             node: Network
             relationship: tosca.relationships.Network
+      capabilities:
+        os:
+          properties:
+            type: linux
+            distribution: ubuntu
+            architecture: x86_64
+    BlockStorage:
+      type: tosca.nodes.BlockStorage
+      properties:
+        volume_id: "272cc97a-4197-499c-922d-5790403a38e4" 
+      requirements:
+        - attachment:
+            node: Compute
+            capability: tosca.capabilities.Attachment
+            relationship: tosca.relationships.AttachTo
+    LinuxFileSystem:
+      type: alien.nodes.LinuxFileSystem
+      properties:
+        location: "/mountedStorageNb"
+        fs_type: ext3
+      requirements:
+        - host:
+            node: Compute
+        - partition:
+            node: BlockStorage
+
     InfluxDbServer:
       type: com.easyvirt.influxdb.linux.nodes.InfluxDbServer
       requirements:
         - host:
             node: Compute
-    InfluxDb:
-      type: com.easyvirt.influxdb.linux.nodes.InfluxDbEndpoint
-      properties:
-        name: { get_input: db_name }
-        user: { get_input: db_user }
-        password: { get_input: db_password }
-      requirements:
-        - host:
-            node: InfluxDbServer
+        - filesystem_endpoint:
+            node: LinuxFileSystem
+
+#    InfluxDb:
+#      type: com.easyvirt.influxdb.linux.nodes.InfluxDbEndpoint
+#      properties:
+#        name: { get_input: db_name }
+#        user: { get_input: db_user }
+#        password: { get_input: db_password }
+#      requirements:
+#        - host:
+#            node: InfluxDbServer
+#        - filesystem_endpoint:
+#            node: LinuxFileSystem
