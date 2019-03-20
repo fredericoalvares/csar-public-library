@@ -21,9 +21,9 @@ echo "Using apt-get. Installing influxdb on one of the following : ${DISTRIB_ID}
 #  sleep 0.5
 #done
 #
-#wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
-#source /etc/lsb-release
-#echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+source /etc/lsb-release
+echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
 #
 #
 #sudo rm -f /var/lib/dpkg/lock
