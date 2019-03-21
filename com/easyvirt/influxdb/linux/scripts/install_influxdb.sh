@@ -16,10 +16,6 @@ LOCK="/tmp/lockaptget"
 #  sleep 0.5
 #done
 #
-#while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
-#  echo "$NAME waiting for other software managers to finish..."
-#  sleep 0.5
-#done
 #
 #wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 #source /etc/lsb-release
@@ -33,6 +29,12 @@ LOCK="/tmp/lockaptget"
 #sudo apt-get update || (sleep 15; sudo apt-get update || exit ${1})
 #sudo apt-get install -y -q influxdb || exit ${1}
 wget https://dl.influxdata.com/influxdb/releases/influxdb_1.7.4_amd64.deb
+
+while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
+  echo "$NAME waiting for other software managers to finish..."
+  sleep 0.5
+done
+
 sudo dpkg -i influxdb_1.7.4_amd64.deb
 
 sudo systemctl unmask influxdb.service
