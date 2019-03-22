@@ -93,7 +93,7 @@ node_types:
                     - distribution: { valid_values: [ "ubuntu", "debian" ] }
       - filesystem_endpoint:
           capability: tosca.capabilities.Node
-          relationship: com.easyvirt.influxdb.linux.relationships.DependsOn.InfluxDbVolume
+          relationship: com.easyvirt.influxdb.ansible.relationships.DependsOn.InfluxDbVolume
           occurrences: [1, 1]
     capabilities:
       host:
