@@ -45,17 +45,13 @@ node_types:
         create:
           inputs:
             DB_NAME: { get_property: [SELF, name] }
-          implementation: scripts/influxdb_create_db.yaml
+          implementation: playbooks/influxdb_create_db.yaml
         configure:
           inputs:
             DB_NAME: { get_property: [SELF, name] }
             DB_USER: { get_property: [SELF, user] }
             DB_PASS: { get_property: [SELF, password] }
-          implementation: scripts/influxdb_configure_db.yaml
-    artifacts:
-      - scripts:
-          type: tosca.artifacts.File
-          file: scripts
+          implementation: playbooks/influxdb_configure_db.yaml
 
 
   com.easyvirt.influxdb.ansible.nodes.InfluxDbServer:
@@ -106,30 +102,26 @@ node_types:
         create:
           inputs:
             DB_VERSION: { get_property: [SELF, component_version] }
-          implementation: scripts/influxdb_install.yaml
+          implementation: playbooks/influxdb_install.yaml
         configure:
           inputs:
             API_PORT: { get_property: [SELF, api_port] }
             RPC_PORT: { get_property: [SELF, rpc_port] }
             INFLUXDB_DATA_PATH: { get_property: [SELF, influxdb_data_path] }  
-          implementation: scripts/influxdb_configure.yaml
+          implementation: playbooks/influxdb_configure.yaml
         start:
-          implementation: scripts/influxdb_start.yaml
+          implementation: playbooks/influxdb_start.yaml
         stop:
-          implementation: scripts/influxdb_stop.yaml
-    artifacts:
-      - scripts:
-          type: tosca.artifacts.File
-          file: scripts
+          implementation: playbooks/influxdb_stop.yaml
 
 relationship_types:
-  com.easyvirt.influxdb.linux.relationships.HostedOn.InfluxDbServer:
+  com.easyvirt.influxdb.ansible.relationships.HostedOn.InfluxDbServer:
     derived_from: org.ystia.relationships.HostedOn
     description: >
       This type represents a hosting relationship between InfluxDbServer and InfluxDbEndpoint nodes components
     valid_target_types: [ com.easyvirt.influxdb.pub.capabilities.Container.InfluxDbServer ]
 
-  com.easyvirt.influxdb.linux.relationships.DependsOn.InfluxDbVolume:
+  com.easyvirt.influxdb.ansible.relationships.DependsOn.InfluxDbVolume:
     derived_from: org.ystia.relationships.DependsOn
     valid_target_types: [ tosca.capabilities.Node ]
     interfaces:
@@ -137,8 +129,4 @@ relationship_types:
         pre_configure_source:
           inputs:
             TARGET_BLOCKSTORAGE_LOCATION: { get_attribute: [TARGET, location] }
-          implementation: scripts/influxdb_pre_configure_volume.yaml
-    artifacts:
-      - scripts:
-          type: tosca.artifacts.File
-          file: scripts
+          implementation: playbooks/influxdb_pre_configure_volume.yaml
