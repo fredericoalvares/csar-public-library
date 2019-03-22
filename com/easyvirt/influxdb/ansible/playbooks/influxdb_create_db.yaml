@@ -1,0 +1,9 @@
+- name: InfluxDB create DB  
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - debug: 
+        mgs: "Create DB:"
+
+

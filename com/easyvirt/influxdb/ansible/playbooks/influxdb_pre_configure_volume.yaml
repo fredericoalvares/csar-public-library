@@ -4,6 +4,6 @@
   become: true
   tasks:
     - debug: 
-      mgs: "Location: {{ TARGET_BLOCKSTORAGE_LOCATION }}"
+        mgs: "Location: {{ TARGET_BLOCKSTORAGE_LOCATION }}"
 
 
