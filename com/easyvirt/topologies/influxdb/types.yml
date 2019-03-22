@@ -61,7 +61,8 @@ topology_template:
     BlockStorage:
       type: tosca.nodes.BlockStorage
       properties:
-        volume_id: "272cc97a-4197-499c-922d-5790403a38e4" 
+        volume_id: "272cc97a-4197-499c-922d-5790403a38e4"
+        size: "1 GiB" 
       requirements:
         - attachment:
             node: Compute
