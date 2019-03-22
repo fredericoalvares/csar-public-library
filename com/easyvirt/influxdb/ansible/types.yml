@@ -45,13 +45,13 @@ node_types:
         create:
           inputs:
             DB_NAME: { get_property: [SELF, name] }
-          implementation: scripts/influxdb_create_db.yml
+          implementation: scripts/influxdb_create_db.yaml
         configure:
           inputs:
             DB_NAME: { get_property: [SELF, name] }
             DB_USER: { get_property: [SELF, user] }
             DB_PASS: { get_property: [SELF, password] }
-          implementation: scripts/influxdb_configure_db.yml
+          implementation: scripts/influxdb_configure_db.yaml
     artifacts:
       - scripts:
           type: tosca.artifacts.File
@@ -106,17 +106,17 @@ node_types:
         create:
           inputs:
             DB_VERSION: { get_property: [SELF, component_version] }
-          implementation: scripts/influxdb_install.yml
+          implementation: scripts/influxdb_install.yaml
         configure:
           inputs:
             API_PORT: { get_property: [SELF, api_port] }
             RPC_PORT: { get_property: [SELF, rpc_port] }
             INFLUXDB_DATA_PATH: { get_property: [SELF, influxdb_data_path] }  
-          implementation: scripts/influxdb_configure.yml
+          implementation: scripts/influxdb_configure.yaml
         start:
-          implementation: scripts/influxdb_start.yml
+          implementation: scripts/influxdb_start.yaml
         stop:
-          implementation: scripts/influxdb_stop.yml
+          implementation: scripts/influxdb_stop.yaml
     artifacts:
       - scripts:
           type: tosca.artifacts.File
@@ -137,7 +137,7 @@ relationship_types:
         pre_configure_source:
           inputs:
             TARGET_BLOCKSTORAGE_LOCATION: { get_attribute: [TARGET, location] }
-          implementation: scripts/influxdb_pre_configure_volume.yml
+          implementation: scripts/influxdb_pre_configure_volume.yaml
     artifacts:
       - scripts:
           type: tosca.artifacts.File
