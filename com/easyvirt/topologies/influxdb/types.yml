@@ -10,7 +10,7 @@ imports:
   - alien-extended-storage-types:2.0.0
   - org.ystia.common:2.0.0-SNAPSHOT
   - com.easyvirt.influxdb.pub:0.0.11-SNAPSHOT
-  - com.easyvirt.influxdb.linux:0.0.11-SNAPSHOT
+  - com.easyvirt.influxdb.ansible:0.0.11-SNAPSHOT
 
 topology_template:
   description: A basic topology template for InfluxDB as a Single Server node
@@ -78,7 +78,7 @@ topology_template:
         - partition:
             node: BlockStorage
     InfluxDbServer:
-      type: com.easyvirt.influxdb.linux.nodes.InfluxDbServer
+      type: com.easyvirt.influxdb.ansible.nodes.InfluxDbServer
       requirements:
         - host:
             node: Compute
