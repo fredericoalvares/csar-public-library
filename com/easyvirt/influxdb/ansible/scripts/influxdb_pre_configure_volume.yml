@@ -1,0 +1,9 @@
+- name: InfluxDB pre configure volume  
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - debug: 
+      mgs: "Location: {{ TARGET_BLOCKSTORAGE_LOCATION }}"
+
+

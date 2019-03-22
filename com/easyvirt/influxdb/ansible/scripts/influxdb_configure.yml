@@ -1,0 +1,45 @@
+- name: Configure Influxdb 
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - name: Stop InfluxDB
+      service:
+        name: influxdb
+        state: stopped
+        enabled: yes
+
+
+    - name: Set parameters 
+      ini_file:
+        path: /etc/influxdb/influxdb.conf
+        section: "{{ item.section }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { section: "meta", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/meta" }
+        - { section: "data", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/data" }
+        - { section: "data", option: "wal-dir", value: "{{ INFLUXDB_DATA_PATH }}/wal" }
+        - { section: "data", option: "wal-dir", value: {{ API_PORT }} }
+        - { section: "data", option: "wal-dir", value: {{ RPC_PORT }} }
+
+    - debug:
+        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+
+    - name: Add the InfluxDB apt signing key
+      apt_key:
+        url: https://repos.influxdata.com/influxdb.key 
+        state: present:
+
+    - name: Add the InfluxDB apt repository
+      apt_repository:
+        repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+        state: present
+      
+    - name: Update repositories cache 
+      apt: update_cache=yes
+
+    - name: Install InfluxDB 
+      apt:
+        name: influxdb 
+        state: present

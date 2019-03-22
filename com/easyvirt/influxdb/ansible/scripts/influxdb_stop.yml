@@ -1,0 +1,12 @@
+- name: Stop Influxdb 
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - name: Stop InfluxDB
+      service:
+        name: influxdb
+        state: stopped 
+        enabled: yes
+
+
