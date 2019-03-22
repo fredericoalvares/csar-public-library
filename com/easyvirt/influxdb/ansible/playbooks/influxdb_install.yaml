@@ -9,7 +9,7 @@
     - name: Add the InfluxDB apt signing key
       apt_key:
         url: https://repos.influxdata.com/influxdb.key 
-        state: present:
+        state: present
 
     - name: Add the InfluxDB apt repository
       apt_repository:
