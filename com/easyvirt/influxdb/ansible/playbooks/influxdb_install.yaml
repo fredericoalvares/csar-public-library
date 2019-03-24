@@ -4,7 +4,7 @@
   become: true
   tasks:
     - debug:
-        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
       #
       #    - name: Install pip
       #      script: get-pip.py
@@ -26,7 +26,7 @@
 
     - name: Add the InfluxDB apt repository
       apt_repository:
-        repo: deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable
+        repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
         state: present
      
 #    - name: Update repositories cache 
