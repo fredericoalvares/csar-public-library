@@ -3,8 +3,8 @@
   strategy: free
   become: true
   tasks:
-      #    - debug:
-      #        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+    - debug:
+        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
       #
       #    - name: Install pip
       #      script: get-pip.py
@@ -26,11 +26,11 @@
 
     - name: Add the InfluxDB apt repository
       apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+        repo: deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable
         state: present
      
-    - name: Update repositories cache 
-      apt: update_cache=yes
+#    - name: Update repositories cache 
+#      apt: update_cache=yes
 
     - name: Install InfluxDB 
       apt:
