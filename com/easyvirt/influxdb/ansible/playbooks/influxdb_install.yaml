@@ -3,18 +3,21 @@
   strategy: free
   become: true
   tasks:
-    - debug:
-        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+      #    - debug:
+      #        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution }} {{ hostvars[inventory_hostname].ansible_distribution_release }} stable"
+      #
+      #    - name: Install pip
+      #      script: get-pip.py
+      #
+      #    - name: Install python-apt 
+      #      pip:
+      #        name: 
+      #           - python-apt
+      #           - virtualenv
+      #           - setuptools
 
-    - name: Install pip
-      script: get-pip.py
-
-    - name: Install python-apt 
-      pip:
-        name: 
-           - python-apt
-           - virtualenv
-           - setuptools
+    - name: Wait for automatic system updates
+      shell: while pgrep unattended; do sleep 10; done;
 
     - name: Add the InfluxDB apt signing key
       apt_key:
