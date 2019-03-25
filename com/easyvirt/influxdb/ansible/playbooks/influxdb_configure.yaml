@@ -20,6 +20,6 @@
         - { section: "meta", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/meta" }
         - { section: "data", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/data" }
         - { section: "data", option: "wal-dir", value: "{{ INFLUXDB_DATA_PATH }}/wal" }
-        - { section: "data", option: "wal-dir", value: {{ API_PORT }} }
-        - { section: "data", option: "wal-dir", value: {{ RPC_PORT }} }
+        - { section: "data", option: "wal-dir", value: "{{ API_PORT }}" }
+        - { section: "data", option: "wal-dir", value: "{{ RPC_PORT }}" }
 
