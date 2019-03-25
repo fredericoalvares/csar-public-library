@@ -3,8 +3,8 @@
   strategy: free
   become: true
   tasks:
-    - debug:
-        msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
+      #    - debug:
+      #   msg: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
       #
       #    - name: Install pip
       #      script: get-pip.py
@@ -16,29 +16,48 @@
       #           - virtualenv
       #           - setuptools
 
-    - name: Wait for automatic system updates
-      shell: while pgrep unattended; do sleep 10; done;
 
-    - name: Add the InfluxDB apt signing key
-      apt_key:
-        url: https://repos.influxdata.com/influxdb.key 
-        state: present
+    - name: Create yum file for InfluxDB  
+      copy:
+         dest: "/etc/yum.repos.d/influxdb.repo"
+         content: |
+           [influxdb]
+           name = InfluxDB Repository - RHEL \$releasever
+           baseurl = https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
+           enabled = 1
+           gpgcheck = 1
+           gpgkey = https://repos.influxdata.com/influxdb.key 
 
-    - name: Wait for automatic system updates
-      shell: while pgrep unattended; do sleep 10; done;
 
-    - name: Add the InfluxDB apt repository
-      apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
-        state: present
+    - name: Install InfluxDB
+      yum:
+        name:
+           - influxdb
+      state: present
 
-    - name: Wait for automatic system updates
-      shell: while pgrep unattended; do sleep 10; done;
-
-#    - name: Update repositories cache 
-#      apt: update_cache=yes
-
-    - name: Install InfluxDB 
-      apt:
-        name: influxdb 
-        state: present
+      #    - name: Wait for automatic system updates
+      #      shell: while pgrep unattended; do sleep 10; done;
+      #
+      #    - name: Add the InfluxDB apt signing key
+      #      apt_key:
+      #        url: https://repos.influxdata.com/influxdb.key 
+      #        state: present
+      #
+      #    - name: Wait for automatic system updates
+      #      shell: while pgrep unattended; do sleep 10; done;
+      #
+      #    - name: Add the InfluxDB apt repository
+      #      apt_repository:
+      #        repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
+      #        state: present
+      #
+      #    - name: Wait for automatic system updates
+      #      shell: while pgrep unattended; do sleep 10; done;
+      #
+      ##    - name: Update repositories cache 
+      ##      apt: update_cache=yes
+      #
+      #    - name: Install InfluxDB 
+      #      apt:
+      #        name: influxdb 
+      #        state: present

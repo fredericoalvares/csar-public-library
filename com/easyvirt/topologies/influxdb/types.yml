@@ -56,7 +56,7 @@ topology_template:
         os:
           properties:
             type: linux
-            distribution: ubuntu
+            distribution: centos
             architecture: x86_64
     BlockStorage:
       type: tosca.nodes.BlockStorage

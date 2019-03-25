@@ -90,7 +90,7 @@ node_types:
                   properties:
                     - type: { equal: linux }
                     - architecture: { equal: x86_64 }
-                    - distribution: { valid_values: [ "ubuntu", "debian" ] }
+                    - distribution: { valid_values: [ "centos" ] }
       - filesystem_endpoint:
           capability: tosca.capabilities.Node
           relationship: com.easyvirt.influxdb.ansible.relationships.DependsOn.InfluxDbVolume
