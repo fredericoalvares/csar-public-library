@@ -24,11 +24,17 @@
         url: https://repos.influxdata.com/influxdb.key 
         state: present
 
+    - name: Wait for automatic system updates
+      shell: while pgrep unattended; do sleep 10; done;
+
     - name: Add the InfluxDB apt repository
       apt_repository:
         repo: "deb https://repos.influxdata.com/{{ hostvars[inventory_hostname].ansible_distribution | lower }} {{ hostvars[inventory_hostname].ansible_distribution_release | lower }} stable"
         state: present
-     
+
+    - name: Wait for automatic system updates
+      shell: while pgrep unattended; do sleep 10; done;
+
 #    - name: Update repositories cache 
 #      apt: update_cache=yes
 
