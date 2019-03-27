@@ -1,0 +1,9 @@
+- name: Install Chronograf 
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - name: Install Chronograf via yum
+      yum:
+        name: "https://dl.influxdata.com/chronograf/releases/chronograf-{{ VERSION }}.x86_64.rpm"
+        state: present

@@ -1,0 +1,57 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.chronograf.ansible
+  template_version: 0.1.0-SNAPSHOT
+  template_author: easyvirt
+
+description: Chronograf installation with Ansible
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - alien-base-types:2.0.0
+  - yorc-types:1.0.0
+  - com.easyvirt.chronograf.pub:0.1.0-SNAPSHOT
+
+node_types:
+  com.easyvirt.chronograf.ansible.nodes.Chronograf:
+    derived_from: tosca.nodes.SoftwareComponent
+    description: A node that provides a Cronograf endpoint.
+    metadata:
+      icon: /images/chronograf.jpg
+    properties:
+      component_version:
+        type: version
+        default: 1.7.9
+        required: false
+    attributes:
+      url: { concat: [get_property: [SELF, endpoint, protocol], "://", get_attribute: [HOST, public_ip_address], ":", get_property: [SELF, endpoint, port] ] }
+    capabilities:
+      endpoint:
+        type: com.easyvirt.cronograf.pub.capabilities.EntryPoint
+        occurrences: [0, unbounded]
+    requirements:
+      - host: 
+          capability: tosca.capabilities.Container
+          node: tosca.nodes.Compute
+          relationship: tosca.relationships.HostedOn
+          occurrences: [1, 1]
+          node_filter:
+            capabilities:
+              - tosca.capabilities.OperatingSystem:
+                  properties:
+                    - type: { equal: linux }
+                    - architecture: { equal: x86_64 }
+                    - distribution: { valid_values: [ "centos" ] }
+    interfaces:
+      Standard:
+        create:
+          inputs:
+            VERSION: { get_property: [SELF, component_version] }
+          implementation: playbooks/chronograf_install.yaml
+        configure:
+          implementation: playbooks/cronograf_configure.yaml
+        start:
+          implementation: playbooks/cronograf_start.yaml
+        stop:
+          implementation: playbooks/cronograf_stop.yaml

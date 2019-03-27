@@ -29,11 +29,10 @@
            gpgkey = https://repos.influxdata.com/influxdb.key 
 
 
-    - name: Install InfluxDB
+    - name: Install InfluxDB via yum
       yum:
-        name:
-           - influxdb
-      state: present
+        name: influxdb
+        state: present
 
       #    - name: Wait for automatic system updates
       #      shell: while pgrep unattended; do sleep 10; done;

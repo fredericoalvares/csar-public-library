@@ -1,0 +1,12 @@
+- name: Stop Chronograf
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - name: Stop Chronograf
+      service:
+        name: chronograf
+        state: stopped 
+        enabled: yes
+
+

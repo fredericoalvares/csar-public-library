@@ -1,0 +1,54 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.topologies.influxdb_chronograf
+  template_version: 0.1.0-SNAPSHOT
+  template_author: EasyVirt
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - alien-extended-storage-types:2.0.0
+  - org.ystia.common:2.0.0-SNAPSHOT
+  - com.easyvirt.chronograf.pub:0.1.0-SNAPSHOT
+  - com.easyvirt.chronograf.ansible:0.1.0-SNAPSHOT
+
+topology_template:
+  description: A basic topology template for Chronograf as a single server node
+
+# Inputus properties
+  inputs:
+     port:
+       type: int
+       description: Chronograf endpoint port
+       default: 8888
+
+  node_templates:
+
+    # Network
+    Network:
+      type: tosca.nodes.Network
+      properties:
+        ip_version: 4
+
+
+
+    # VM for chronograf software
+    Compute:
+      type: tosca.nodes.Compute
+      requirements:
+        - network:
+            node: Network
+            relationship: tosca.relationships.Network
+      capabilities:
+        os:
+          properties:
+            type: linux
+            distribution: centos
+            architecture: x86_64
+
+    ChronografEntryPoint:
+      type: com.easyvirt.chronograf.ansible.nodes.Chronograf
+      requirements:
+        - host:
+            node: Compute
+

@@ -1,0 +1,29 @@
+tosca_definitions_version: alien_dsl_2_0_0
+
+metadata:
+  template_name: com.easyvirt.chronograf.pub
+  template_version: 0.1.0-SNAPSHOT
+  template_author: easyvirt
+
+description: Chronograf installation
+
+imports:
+  - tosca-normative-types:1.0.0-ALIEN20
+  - org.ystia.common:2.0.0-SNAPSHOT
+
+capability_types:
+  com.easyvirt.cronograf.pub.capabilities.EntryPoint:
+    derived_from: tosca.capabilities.Endpoint
+    description: Chronograf endpoint
+    properties:
+      port:
+        type: integer
+        default: 8080
+        required: true
+        constraints:
+          - in_range: [ 1, 65535 ]
+      protocol:
+        type: string
+        default: http
+        constraints:
+          - valid_values: [http, https]

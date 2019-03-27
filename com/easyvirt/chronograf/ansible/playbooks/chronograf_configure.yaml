@@ -1,0 +1,25 @@
+- name: Configure Chronograf 
+  hosts: all
+  strategy: free
+  become: true
+  tasks:
+    - name: Stop Chronograf
+      service:
+        name: chronograf
+        state: stopped
+        enabled: yes
+
+
+        #    - name: Set parameters 
+        #      ini_file:
+        #        path: /etc/influxdb/influxdb.conf
+        #        section: "{{ item.section }}"
+        #        option: "{{ item.option }}"
+        #        value: "{{ item.value }}"
+        #      with_items:
+        #        - { section: "meta", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/meta" }
+        #        - { section: "data", option: "dir", value: "{{ INFLUXDB_DATA_PATH }}/data" }
+        #        - { section: "data", option: "wal-dir", value: "{{ INFLUXDB_DATA_PATH }}/wal" }
+        #        - { section: "data", option: "wal-dir", value: "{{ API_PORT }}" }
+        #        - { section: "data", option: "wal-dir", value: "{{ RPC_PORT }}" }
+
