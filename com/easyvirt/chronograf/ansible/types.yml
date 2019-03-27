@@ -50,8 +50,8 @@ node_types:
             VERSION: { get_property: [SELF, component_version] }
           implementation: playbooks/chronograf_install.yaml
         configure:
-          implementation: playbooks/cronograf_configure.yaml
+          implementation: playbooks/chronograf_configure.yaml
         start:
-          implementation: playbooks/cronograf_start.yaml
+          implementation: playbooks/chronograf_start.yaml
         stop:
-          implementation: playbooks/cronograf_stop.yaml
+          implementation: playbooks/chronograf_stop.yaml
